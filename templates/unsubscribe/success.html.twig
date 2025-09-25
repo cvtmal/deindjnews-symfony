@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abmeldung erfolgreich - DeinDJ.ch{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+    <div class="max-w-md w-full bg-gray-800 rounded-lg shadow-xl p-8 text-center">
+        <div class="mb-6">
+            <svg class="w-20 h-20 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+
+        <h1 class="text-3xl font-bold text-white mb-4">Abmeldung erfolgreich</h1>
+
+        <p class="text-gray-300 mb-6">
+            Du wurdest erfolgreich von unserem Newsletter abgemeldet. Du erhältst keine weiteren E-Mails von uns.
+        </p>
+
+        <p class="text-gray-400 text-sm mb-8">
+            Schade, dass du gehst! Falls du deine Meinung änderst, kannst du dich jederzeit wieder auf unserer Website anmelden.
+        </p>
+
+        <a href="https://deindj.ch" class="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-full hover:opacity-90 transition-opacity">
+            Zur DeinDJ Website
+        </a>
+
+        <div class="mt-8 pt-6 border-t border-gray-700">
+            <p class="text-gray-500 text-sm">
+                © {{ "now"|date("Y") }} DeinDJ.ch. Alle Rechte vorbehalten.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

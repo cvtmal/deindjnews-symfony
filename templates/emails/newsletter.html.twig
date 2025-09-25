@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neu bei DeinDJ.ch: Mehr Musik für euren Anlass</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: rgb(43, 43, 43);
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgb(43, 43, 43);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .content {
+            padding: 40px 20px;
+            background-color: #2b2b2b;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        h2 {
+            color: #ffffff;
+            font-size: 22px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .service-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            transition: transform 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        .service-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .service-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: opacity 0.3s;
+        }
+        .cta-button:hover {
+            opacity: 0.9;
+        }
+        .features {
+            background-color: #1f1f1f;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        .feature {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .feature::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            padding: 30px 20px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+        .unsubscribe {
+            color: #888;
+            text-decoration: underline;
+            font-size: 12px;
+        }
+        .social-links {
+            margin: 20px 0;
+        }
+        .social-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        @media (max-width: 600px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://deindj.ch/images/logo-light.png" alt="DeinDJ Logo" class="logo">
+            <h1>🎉 Neu bei DeinDJ.ch: Mehr Musik für euren Anlass!</h1>
+        </div>
+
+        <div class="content">
+            {% if recipientName %}
+            <p>Hallo {{ recipientName }},</p>
+            {% else %}
+            <p>Hallo,</p>
+            {% endif %}
+
+            <p><strong>Wir haben tolle Neuigkeiten für dich!</strong> Bei DeinDJ.ch findest du ab sofort nicht nur die besten DJs der Schweiz, sondern ein komplettes Entertainment-Angebot für jeden Anlass.</p>
+
+            <h2>🎵 Unsere neuen Services im Überblick:</h2>
+
+            <div class="service-grid">
+                <a href="{{ trackingUrl('https://deindj.ch/saxophonisten', recipientEmail) }}" class="service-card">
+                    <div class="service-icon">🎷</div>
+                    <div class="service-name">Saxophonisten</div>
+                </a>
+                <a href="{{ trackingUrl('https://deindj.ch/partybands', recipientEmail) }}" class="service-card">
+                    <div class="service-icon">🎸</div>
+                    <div class="service-name">Partybands</div>
+                </a>
+                <a href="{{ trackingUrl('https://deindj.ch/saenger', recipientEmail) }}" class="service-card">
+                    <div class="service-icon">🎤</div>
+                    <div class="service-name">Sänger</div>
+                </a>
+                <a href="{{ trackingUrl('https://deindj.ch/traurednerinnen', recipientEmail) }}" class="service-card">
+                    <div class="service-icon">💍</div>
+                    <div class="service-name">Trauredner</div>
+                </a>
+                <a href="{{ trackingUrl('https://deindj.ch/hochzeitsfotografen', recipientEmail) }}" class="service-card">
+                    <div class="service-icon">📸</div>
+                    <div class="service-name">Fotografen</div>
+                </a>
+                <a href="{{ trackingUrl('https://deindj.ch/djs', recipientEmail) }}" class="service-card">
+                    <div class="service-icon">🎧</div>
+                    <div class="service-name">DJs</div>
+                </a>
+            </div>
+
+            <div class="features">
+                <h2>✨ Warum DeinDJ.ch?</h2>
+                <div class="feature">Geprüfte Künstler aus der ganzen Schweiz</div>
+                <div class="feature">Transparente Preise und faire Konditionen</div>
+                <div class="feature">Einfache Online-Buchung in wenigen Klicks</div>
+                <div class="feature">Persönliche Beratung für dein Event</div>
+                <div class="feature">100% Zufriedenheitsgarantie</div>
+            </div>
+
+            <p><strong>Egal ob Hochzeit, Firmenfeier, Geburtstag oder privates Fest</strong> – bei uns findest du die perfekte musikalische Begleitung für jeden Anlass. Unsere Künstler sorgen dafür, dass dein Event unvergesslich wird!</p>
+
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="{{ trackingUrl('https://deindj.ch', recipientEmail) }}" class="cta-button">
+                    Jetzt anfragen und unverbindliches Angebot erhalten
+                </a>
+            </div>
+
+            <p>Hast du Fragen? Wir sind für dich da!</p>
+            <p>
+                📧 Email: <a href="mailto:hallo@deindj.ch" style="color: #667eea;">hallo@deindj.ch</a><br>
+                📱 WhatsApp: +41 79 123 45 67<br>
+                🌐 Website: <a href="{{ trackingUrl('https://deindj.ch', recipientEmail) }}" style="color: #667eea;">www.deindj.ch</a>
+            </p>
+
+            <p style="margin-top: 30px;">Musikalische Grüsse,<br>
+            <strong>Dein DeinDJ Team</strong></p>
+        </div>
+
+        <div class="footer">
+            <div class="social-links">
+                <a href="https://facebook.com/deindj">Facebook</a>
+                <a href="https://instagram.com/deindj">Instagram</a>
+                <a href="https://linkedin.com/company/deindj">LinkedIn</a>
+            </div>
+
+            <p>DeinDJ.ch - Die Plattform für Entertainment in der Schweiz<br>
+            © {{ "now"|date("Y") }} DeinDJ.ch. Alle Rechte vorbehalten.</p>
+
+            <p>
+                <a href="{{ unsubscribeUrl }}" class="unsubscribe">
+                    Newsletter abbestellen
+                </a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

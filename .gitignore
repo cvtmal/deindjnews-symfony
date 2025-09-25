@@ -23,3 +23,7 @@
 # Project documentation
 projectsummary.md
 CLAUDE.md
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

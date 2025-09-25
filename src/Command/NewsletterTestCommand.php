@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Service\NewsletterService;
@@ -20,9 +22,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class NewsletterTestCommand extends Command
 {
     public function __construct(
-        private NewsletterService $newsletterService,
-        private ValidatorInterface $validator,
-        private LoggerInterface $logger
+        private readonly NewsletterService $newsletterService,
+        private readonly ValidatorInterface $validator,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }
@@ -35,35 +37,35 @@ class NewsletterTestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $symfonyStyle = new SymfonyStyle($input, $output);
         $email = $input->getArgument('email');
 
-        $errors = $this->validator->validate($email, [new Email()]);
-        if (count($errors) > 0) {
-            $io->error('Invalid email address provided: ' . $email);
+        $constraintViolationList = $this->validator->validate($email, [new Email()]);
+        if (count($constraintViolationList) > 0) {
+            $symfonyStyle->error('Invalid email address provided: ' . $email);
             return Command::FAILURE;
         }
 
-        $io->info(sprintf('Sending test newsletter to: %s', $email));
+        $symfonyStyle->info(sprintf('Sending test newsletter to: %s', $email));
 
         try {
             $this->newsletterService->sendTestNewsletter($email);
 
-            $io->success(sprintf('Test newsletter successfully sent to: %s', $email));
+            $symfonyStyle->success(sprintf('Test newsletter successfully sent to: %s', $email));
             $this->logger->info('Test newsletter sent', ['email' => $email]);
 
             return Command::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $errorMessage = sprintf(
                 'Failed to send test newsletter to %s: %s',
                 $email,
-                $e->getMessage()
+                $exception->getMessage()
             );
 
-            $io->error($errorMessage);
+            $symfonyStyle->error($errorMessage);
             $this->logger->error($errorMessage, [
                 'email' => $email,
-                'exception' => $e->getMessage()
+                'exception' => $exception->getMessage()
             ]);
 
             return Command::FAILURE;

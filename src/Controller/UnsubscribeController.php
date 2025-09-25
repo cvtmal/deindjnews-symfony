@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Repository\SubscriberRepository;
@@ -12,9 +14,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class UnsubscribeController extends AbstractController
 {
     public function __construct(
-        private SubscriberRepository $subscriberRepository,
-        private EntityManagerInterface $entityManager,
-        private LoggerInterface $logger
+        private readonly SubscriberRepository $subscriberRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
     ) {}
 
     #[Route('/unsubscribe/{email}', name: 'app_unsubscribe', methods: ['GET'])]
@@ -39,10 +41,10 @@ class UnsubscribeController extends AbstractController
                     'unsubscribed_at' => $subscriber->getUnsubscribedAt()->format('Y-m-d H:i:s')
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->logger->error('Error processing unsubscribe', [
                 'email' => $decodedEmail,
-                'error' => $e->getMessage()
+                'error' => $exception->getMessage()
             ]);
         }
 

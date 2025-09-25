@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Repository\SubscriberRepository;
@@ -15,10 +17,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class ClickTrackingController extends AbstractController
 {
     public function __construct(
-        private ClickTrackingService $clickTrackingService,
-        private SubscriberRepository $subscriberRepository,
-        private EntityManagerInterface $entityManager,
-        private LoggerInterface $logger
+        private readonly ClickTrackingService $clickTrackingService,
+        private readonly SubscriberRepository $subscriberRepository,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
     ) {}
 
     #[Route('/click', name: 'app_click_tracking', methods: ['GET'])]
@@ -48,7 +50,7 @@ class ClickTrackingController extends AbstractController
 
         try {
             $subscriber = $this->subscriberRepository->findByEmail($email);
-            if ($subscriber) {
+            if ($subscriber instanceof \App\Entity\Subscriber) {
                 $linkName = $this->clickTrackingService->extractLinkName($url);
                 $subscriber->recordClick($linkName);
                 $this->entityManager->flush();
@@ -59,11 +61,11 @@ class ClickTrackingController extends AbstractController
                     'link_name' => $linkName
                 ]);
             }
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $this->logger->error('Error tracking click', [
                 'email' => $email,
                 'url' => $url,
-                'error' => $e->getMessage()
+                'error' => $exception->getMessage()
             ]);
         }
 

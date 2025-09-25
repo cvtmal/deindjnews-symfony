@@ -1,3 +1,6 @@
-<?php // dev.encrypt.public on Thu, 25 Sep 2025 19:32:59 +0000
+<?php
 
+declare(strict_types=1);
+
+// dev.encrypt.public on Thu, 25 Sep 2025 19:32:59 +0000
 return "\x1F\x0C\xB5\x3E\x91\x0D\x11\xEE\x9A\xE05\x22\xDE\xD4lob\xF0\xFD\xCE\x0D\xD6\x0F5\xEE\x80\x22S\x0B\xD9\x92V";

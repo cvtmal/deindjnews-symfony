@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\SubscriberRepository;
@@ -149,12 +151,12 @@ class Subscriber
 
     public function isSent(): bool
     {
-        return $this->sentAt !== null;
+        return $this->sentAt instanceof \DateTimeInterface;
     }
 
     public function isUnsubscribed(): bool
     {
-        return $this->unsubscribedAt !== null;
+        return $this->unsubscribedAt instanceof \DateTimeInterface;
     }
 
     public function isPending(): bool
@@ -164,7 +166,7 @@ class Subscriber
 
     public function hasClicked(): bool
     {
-        return $this->lastClickedAt !== null;
+        return $this->lastClickedAt instanceof \DateTimeInterface;
     }
 
     public function markAsSent(): void

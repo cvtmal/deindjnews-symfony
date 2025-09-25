@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use Psr\Log\LoggerInterface;
@@ -8,11 +10,11 @@ use Symfony\Component\Mime\Email;
 
 class AdminNotificationService
 {
-    private array $adminEmails;
+    private readonly array $adminEmails;
 
     public function __construct(
-        private MailerInterface $mailer,
-        private LoggerInterface $logger,
+        private readonly MailerInterface $mailer,
+        private readonly LoggerInterface $logger,
         string $adminEmails
     ) {
         $this->adminEmails = array_map('trim', explode(',', $adminEmails));

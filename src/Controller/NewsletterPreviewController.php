@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,10 +15,9 @@ final class NewsletterPreviewController extends AbstractController
     public function preview(): Response
     {
         // Create a mock tracking URL function
-        $trackingUrl = function($url, $email = null) {
+        $trackingUrl = (fn($url, $email = null): string =>
             // In production, this would add tracking parameters
-            return $url . '?utm_source=newsletter&utm_medium=email';
-        };
+            $url . '?utm_source=newsletter&utm_medium=email');
 
         // Sample data for preview
         $data = [

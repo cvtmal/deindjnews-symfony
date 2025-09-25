@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use Symfony\Component\Mailer\MailerInterface;
@@ -10,16 +12,16 @@ use Twig\Environment;
 class NewsletterService
 {
     public function __construct(
-        private MailerInterface $mailer,
-        private Environment $twig,
-        private UrlGeneratorInterface $urlGenerator
+        private readonly MailerInterface $mailer,
+        private readonly Environment $twigEnvironment,
+        private readonly UrlGeneratorInterface $urlGenerator
     ) {}
 
     public function sendNewsletter(string $recipientEmail, ?string $recipientName = null): void
     {
         $encodedEmail = base64_encode($recipientEmail);
 
-        $html = $this->twig->render('emails/newsletter.html.twig', [
+        $html = $this->twigEnvironment->render('emails/newsletter.html.twig', [
             'recipientName' => $recipientName,
             'recipientEmail' => $recipientEmail,
             'encodedEmail' => $encodedEmail,
@@ -47,15 +49,13 @@ class NewsletterService
 
     private function generateTrackingUrl(): callable
     {
-        return function (string $url, string $email) {
-            return $this->urlGenerator->generate(
-                'app_click_tracking',
-                [
-                    'url' => base64_encode($url),
-                    'email' => base64_encode($email),
-                ],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-        };
+        return fn(string $url, string $email): string => $this->urlGenerator->generate(
+            'app_click_tracking',
+            [
+                'url' => base64_encode($url),
+                'email' => base64_encode($email),
+            ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Repository\SubscriberRepository;
@@ -20,28 +22,28 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class NewsletterSendOneCommand extends Command
 {
     public function __construct(
-        private SubscriberRepository $subscriberRepository,
-        private NewsletterService $newsletterService,
-        private AdminNotificationService $adminNotificationService,
-        private EntityManagerInterface $entityManager,
-        private LoggerInterface $logger
+        private readonly SubscriberRepository $subscriberRepository,
+        private readonly NewsletterService $newsletterService,
+        private readonly AdminNotificationService $adminNotificationService,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $symfonyStyle = new SymfonyStyle($input, $output);
 
         $subscriber = $this->subscriberRepository->findNextUnsentSubscriber();
 
-        if (!$subscriber) {
-            $io->info('No unsent subscribers found.');
+        if (!$subscriber instanceof \App\Entity\Subscriber) {
+            $symfonyStyle->info('No unsent subscribers found.');
             $this->logger->info('No unsent subscribers found');
             return Command::SUCCESS;
         }
 
-        $io->info(sprintf('Sending newsletter to: %s', $subscriber->getEmail()));
+        $symfonyStyle->info(sprintf('Sending newsletter to: %s', $subscriber->getEmail()));
 
         try {
             $this->newsletterService->sendNewsletter(
@@ -52,31 +54,31 @@ class NewsletterSendOneCommand extends Command
             $subscriber->markAsSent();
             $this->entityManager->flush();
 
-            $io->success(sprintf('Newsletter successfully sent to: %s', $subscriber->getEmail()));
+            $symfonyStyle->success(sprintf('Newsletter successfully sent to: %s', $subscriber->getEmail()));
             $this->logger->info('Newsletter sent successfully', [
                 'email' => $subscriber->getEmail(),
                 'sent_at' => $subscriber->getSentAt()->format('Y-m-d H:i:s')
             ]);
 
             return Command::SUCCESS;
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             $errorMessage = sprintf(
                 'Failed to send newsletter to %s: %s',
                 $subscriber->getEmail(),
-                $e->getMessage()
+                $exception->getMessage()
             );
 
-            $io->error($errorMessage);
+            $symfonyStyle->error($errorMessage);
             $this->logger->error($errorMessage, [
                 'email' => $subscriber->getEmail(),
-                'exception' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'exception' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString()
             ]);
 
             try {
                 $this->adminNotificationService->sendFailureNotification(
                     $subscriber->getEmail(),
-                    $e->getMessage()
+                    $exception->getMessage()
                 );
             } catch (\Exception $notificationException) {
                 $this->logger->error('Failed to send admin notification', [

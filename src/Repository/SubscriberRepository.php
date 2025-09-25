@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Subscriber;
@@ -92,7 +94,7 @@ class SubscriberRepository extends ServiceEntityRepository
 
     public function getPopularLinks(int $limit = 5): array
     {
-        $result = $this->createQueryBuilder('s')
+        return $this->createQueryBuilder('s')
             ->select('s.lastClickedLink as link, COUNT(s.id) as count')
             ->where('s.lastClickedLink IS NOT NULL')
             ->groupBy('s.lastClickedLink')
@@ -100,8 +102,6 @@ class SubscriberRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
-
-        return $result;
     }
 
     public function getDashboardStats(): array

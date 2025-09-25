@@ -82,6 +82,9 @@ class SubscriberRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @return array<int, Subscriber>
+     */
     public function findRecentActivity(int $limit = 50): array
     {
         return $this->createQueryBuilder('s')
@@ -92,6 +95,9 @@ class SubscriberRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return array<int, array{link: string, count: int}>
+     */
     public function getPopularLinks(int $limit = 5): array
     {
         return $this->createQueryBuilder('s')
@@ -104,6 +110,9 @@ class SubscriberRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return array{total: int, sent: int, sentPercentage: float, pending: int, unsubscribed: int, unsubscribeRate: float, clicked: int, clickThroughRate: float}
+     */
     public function getDashboardStats(): array
     {
         $totalCount = $this->countTotal();

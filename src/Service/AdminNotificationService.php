@@ -10,6 +10,7 @@ use Symfony\Component\Mime\Email;
 
 class AdminNotificationService
 {
+    /** @var array<int, string> */
     private readonly array $adminEmails;
 
     public function __construct(
